@@ -50,6 +50,6 @@ jobs:
         chmod 400 key.pem
         ssh -i key.pem ${{secrets.USERNAME}}@${{secrets.HOST_DNS}} -p 22 '
         pm2 kill
-        cd /home/ec2-user/online-chat/
+        cd /home/ec2-user/online-booking/
         pm2 start npm --name "online-chat" -- start -- --port 3000
         '
