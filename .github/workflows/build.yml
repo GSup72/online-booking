@@ -51,5 +51,6 @@ jobs:
         ssh -i key.pem ${{secrets.USERNAME}}@${{secrets.HOST_DNS}} -p 22 '
         pm2 kill
         cd /home/ec2-user/online-booking/
+        npm install
         pm2 start npm --name "online-booking" -- start -- --port 3000
         '
