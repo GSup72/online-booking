@@ -28,6 +28,7 @@ function verifyToken(req, res, next) {
 	});
 }
 
+
 router.get('/reviews', async (req, res) => {
 	const collection = db.collection('listingsAndReviews');
 	const limit = 10;
@@ -41,6 +42,7 @@ router.get('/reviews', async (req, res) => {
 		res.status(500).json({ error: "Server error" });
 	}
 })
+
 
 router.post('/signup', async (req, res) => {
 	try {
@@ -68,6 +70,7 @@ router.post('/signup', async (req, res) => {
 	}
 });
 
+
 router.post('/signin', async (req, res) => {
 	try {
 		const { name, password } = req.body;
@@ -92,5 +95,6 @@ router.post('/signin', async (req, res) => {
 		res.status(500).json({ error: 'Server error' });
 	}
 });
+
 
 module.exports = router;
