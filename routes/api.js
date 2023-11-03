@@ -8,7 +8,6 @@ const db = require('../db');
 
 const SECRET = process.env.JWT_SECRET;
 
-
 function verifyToken(req, res, next) {
 	const token = req.headers.authorization;
 
