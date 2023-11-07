@@ -18,6 +18,10 @@ module.exports.signup_post = async (req, res) => {
 	try {
 		const { name, email, password } = req.body;
 
+		if (!name) {
+			return res.status(400).json({ error: 'Name cannot be empty' });
+		}
+
 		const existingUser = await User.findOne({ $or: [{ name }, { email }] });
 		if (existingUser) {
 			return res.status(400).json({ error: 'User with the same name or email already exists' });
@@ -43,6 +47,10 @@ module.exports.signup_post = async (req, res) => {
 module.exports.signin_post = async (req, res) => {
 	try {
 		const { name, password } = req.body;
+
+		if (!name) {
+			return res.status(400).json({ error: 'Name cannot be empty' });
+		}
 
 		const user = await User.findOne({ name });
 
