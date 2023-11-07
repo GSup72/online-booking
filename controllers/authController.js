@@ -5,6 +5,7 @@ const User = require('../models/user');
 
 const SECRET = process.env.JWT_SECRET;
 
+
 module.exports.signup_get = (req, res) => {
 	res.render('signup');
 }
@@ -20,12 +21,28 @@ module.exports.signup_post = async (req, res) => {
 
 		if (!name) {
 			return res.status(400).json({ error: 'Name cannot be empty' });
+		};
+
+		if (!email) {
+			return res.status(400).json({ error: 'Email cannot be empty' });
+		};
+
+		if (!email.includes('@')) {
+			return res.status(400).json({ error: 'Invalid email format' });
 		}
+
+		if (/\s/.test(email)) {
+			return res.status(400).json({ error: 'Email cannot contain spaces' });
+		}
+
+		if (password.length < 6 || password.length > 25) {
+			return res.status(400).json({ error: 'Password should be between 6 and 25 characters long' });
+		};
 
 		const existingUser = await User.findOne({ $or: [{ name }, { email }] });
 		if (existingUser) {
 			return res.status(400).json({ error: 'User with the same name or email already exists' });
-		}
+		};
 
 		const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -50,6 +67,10 @@ module.exports.signin_post = async (req, res) => {
 
 		if (!name) {
 			return res.status(400).json({ error: 'Name cannot be empty' });
+		}
+
+		if (password.length < 6 || password.length > 25) {
+			return res.status(400).json({ error: 'Password should be between 6 and 25 characters long' });
 		}
 
 		const user = await User.findOne({ name });
