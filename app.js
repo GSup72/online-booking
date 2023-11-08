@@ -7,6 +7,8 @@ require('dotenv').config();
 
 const apiRouter = require('./routes/api');
 const db = require('./db');
+const { Verify } = require('crypto');
+const { verifyToken } = require('./middleware/authMiddleware');
 
 const app = express();
 
@@ -26,6 +28,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/api', apiRouter);
+app.use('/', verifyToken);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
