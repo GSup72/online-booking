@@ -54,7 +54,11 @@ module.exports.signup_post = async (req, res) => {
 
 		await newUser.save();
 
-		res.status(201).json({ message: 'User has been created successfully' });
+		const token = jwt.sign({ id: newUser.id }, SECRET, { expiresIn: '1h' });
+
+		res.cookie('jwt', token);
+		res.status(200).json({ token });
+		// res.status(201).json({ message: 'User has been created successfully' });
 	} catch (err) {
 		console.error('Signup error:', err);
 		res.status(500).json({ error: 'Server error' });
