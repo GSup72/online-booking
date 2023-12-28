@@ -1,6 +1,17 @@
+// Booking Model
 const mongoose = require("mongoose");
 
 const bookingSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  apartment: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Apartment",
+    required: true,
+  },
   checkIn: {
     type: Date,
     required: true,
@@ -12,10 +23,15 @@ const bookingSchema = new mongoose.Schema({
   numOfGuests: {
     type: Number,
     required: true,
-  },
-  name: {
-    type: String,
-    required: true,
+    validate: {
+      validator: async function (value) {
+        const apartment = await mongoose
+          .model("Apartment")
+          .findById(this.apartment);
+        return value <= apartment.numOfGuests;
+      },
+      message: "Number of guests exceeds the maximum allowed for the apartment",
+    },
   },
   phone: {
     type: String,
